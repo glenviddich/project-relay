@@ -1,87 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 640" width="880" height="640" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 720" width="980" height="720" role="img" aria-labelledby="t d">
   <title id="t">project-relay: one handoff</title>
-  <desc id="d">Sequence of one task handoff between owner, master project, relay repo and worker project.</desc>
+  <desc id="d">Sequence of one task: you ask the master, the master writes a TODO and fires the courier, the courier hands the task to the project coordinator and ends, the coordinator has it worked on and writes the result, the master reports back.</desc>
   <style>
     :root { --bg:#ffffff; --fg:#1f2328; --mute:#59636e; --line:#d1d9e0; --box:#f6f8fa;
-            --m:#0969da; --w:#1a7f37; --r:#8250df; --o:#bc4c00; }
+            --m:#0969da; --w:#1a7f37; --r:#8250df; --o:#bc4c00; --c:#9a6700; }
     @media (prefers-color-scheme: dark) {
       :root { --bg:#0d1117; --fg:#e6edf3; --mute:#9198a1; --line:#3d444d; --box:#151b23;
-              --m:#4493f8; --w:#3fb950; --r:#ab7df8; --o:#f0883e; }
+              --m:#4493f8; --w:#3fb950; --r:#ab7df8; --o:#f0883e; --c:#d29922; }
     }
     .bg { fill: var(--bg); }
     text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fg); }
     .h { font-size: 15px; font-weight: 600; text-anchor: middle; }
     .s { font-size: 11.5px; fill: var(--mute); text-anchor: middle; }
     .l { font-size: 13px; text-anchor: middle; }
-    .n { font-size: 12px; font-weight: 700; fill: var(--bg); text-anchor: middle; }
     .life { stroke: var(--line); stroke-width: 2; stroke-dasharray: 4 5; }
     .hdr { fill: var(--box); stroke-width: 2; }
     .note { fill: var(--box); stroke: var(--line); stroke-width: 1.5; }
     .a { stroke-width: 2; fill: none; }
     .ret { stroke-dasharray: 6 4; }
-    .cm { stroke: var(--m); } .cw { stroke: var(--w); } .co { stroke: var(--o); } .cr { stroke: var(--r); }
-    .fm { fill: var(--m); } .fw { fill: var(--w); } .fo { fill: var(--o); } .fr { fill: var(--r); }
+    .end { stroke: var(--c); stroke-width: 2.5; }
+    .cm { stroke: var(--m); } .cw { stroke: var(--w); } .co { stroke: var(--o); } .cr { stroke: var(--r); } .cc { stroke: var(--c); }
+    .fm { fill: var(--m); } .fw { fill: var(--w); } .fo { fill: var(--o); } .fc { fill: var(--c); }
     .phase { font-size: 11px; font-weight: 600; fill: var(--mute); letter-spacing: .06em; }
   </style>
   <defs>
     <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fm"/></marker>
     <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fw"/></marker>
     <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fo"/></marker>
+    <marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fc"/></marker>
   </defs>
-  <rect class="bg" width="880" height="640" rx="12"/>
+  <rect class="bg" width="980" height="720" rx="12"/>
 
   <!-- lifelines -->
-  <line class="life" x1="110" y1="88" x2="110" y2="620"/>
-  <line class="life" x1="330" y1="88" x2="330" y2="620"/>
-  <line class="life" x1="550" y1="88" x2="550" y2="620"/>
-  <line class="life" x1="770" y1="88" x2="770" y2="620"/>
+  <line class="life" x1="100" y1="88" x2="100" y2="700"/>
+  <line class="life" x1="290" y1="88" x2="290" y2="700"/>
+  <line class="life" x1="480" y1="88" x2="480" y2="700"/>
+  <line class="life" x1="670" y1="88" x2="670" y2="424"/>
+  <line class="life" x1="860" y1="88" x2="860" y2="700"/>
+  <!-- courier ends -->
+  <line class="end" x1="661" y1="424" x2="679" y2="442"/><line class="end" x1="679" y1="424" x2="661" y2="442"/>
+  <text class="s" x="670" y="460">run ends</text>
 
   <!-- headers -->
-  <rect class="hdr co" x="40"  y="24" width="140" height="62" rx="10"/>
-  <text class="h" x="110" y="50">You</text><text class="s" x="110" y="70">owner</text>
-  <rect class="hdr cm" x="250" y="24" width="160" height="62" rx="10"/>
-  <text class="h" x="330" y="50">Master project</text><text class="s" x="330" y="70">the one you talk to</text>
-  <rect class="hdr cr" x="470" y="24" width="160" height="62" rx="10"/>
-  <text class="h" x="550" y="50">Relay repo</text><text class="s" x="550" y="70">projects/blog/TODO.md</text>
-  <rect class="hdr cw" x="690" y="24" width="160" height="62" rx="10"/>
-  <text class="h" x="770" y="50">Worker project</text><text class="s" x="770" y="70">“blog”, trigger disabled</text>
+  <rect class="hdr co" x="30"  y="24" width="140" height="62" rx="10"/>
+  <text class="h" x="100" y="50">You</text><text class="s" x="100" y="70">owner</text>
+  <rect class="hdr cm" x="210" y="24" width="160" height="62" rx="10"/>
+  <text class="h" x="290" y="50">Master project</text><text class="s" x="290" y="70">the one you talk to</text>
+  <rect class="hdr cr" x="400" y="24" width="160" height="62" rx="10"/>
+  <text class="h" x="480" y="50">Relay repo</text><text class="s" x="480" y="70">projects/blog/TODO.md</text>
+  <rect class="hdr cc" x="590" y="24" width="160" height="62" rx="10"/>
+  <text class="h" x="670" y="50">Courier run</text><text class="s" x="670" y="70">blog’s scheduled task, off</text>
+  <rect class="hdr cw" x="780" y="24" width="170" height="62" rx="10"/>
+  <text class="h" x="865" y="50">Project coordinator</text><text class="s" x="865" y="70">the Claude in blog’s chat</text>
 
-  <text class="phase" x="16" y="116">HAND OFF</text>
-  <!-- 1 -->
-  <line class="a co" x1="110" y1="132" x2="326" y2="132" marker-end="url(#ao)"/>
-  <text class="l" x="220" y="124">“blog: add an RSS feed”</text>
-  <!-- 2 -->
-  <line class="a cm" x1="330" y1="180" x2="546" y2="180" marker-end="url(#am)"/>
-  <text class="l" x="440" y="172">TODO-004 · open, push</text>
-  <!-- 3 -->
-  <line class="a cm" x1="330" y1="228" x2="766" y2="228" marker-end="url(#am)"/>
-  <text class="l" x="660" y="220">fire_trigger(id)</text>
-  <!-- 4 -->
-  <rect class="note" x="262" y="246" width="136" height="30" rx="6"/>
-  <text class="l" x="330" y="266">send_later 15 min</text>
+  <text class="phase" x="14" y="118">HAND OFF</text>
+  <line class="a co" x1="100" y1="140" x2="286" y2="140" marker-end="url(#ao)"/>
+  <text class="l" x="195" y="132">“blog: add an RSS feed”</text>
+  <line class="a cm" x1="290" y1="186" x2="476" y2="186" marker-end="url(#am)"/>
+  <text class="l" x="385" y="178">TODO-006 · open, push</text>
+  <line class="a cm" x1="290" y1="232" x2="666" y2="232" marker-end="url(#am)"/>
+  <text class="l" x="575" y="224">fire_trigger(ID from TRIGGERS.md)</text>
+  <rect class="note" x="222" y="250" width="136" height="30" rx="6"/>
+  <text class="l" x="290" y="270">send_later 15 min</text>
 
-  <text class="phase" x="16" y="312">WORK</text>
-  <!-- 5 -->
-  <line class="a cw" x1="770" y1="326" x2="554" y2="326" marker-end="url(#aw)"/>
-  <text class="l" x="662" y="318">pull, grep “· open”</text>
-  <!-- 6 -->
-  <line class="a cw" x1="770" y1="372" x2="554" y2="372" marker-end="url(#aw)"/>
-  <text class="l" x="662" y="364">status → in progress</text>
-  <!-- 7 -->
-  <rect class="note" x="660" y="390" width="210" height="46" rx="6"/>
-  <text class="l" x="765" y="409">subagent does the work</text>
-  <text class="s" x="765" y="426">e.g. PR in the blog’s own repo</text>
-  <!-- 8 -->
-  <line class="a cw" x1="770" y1="464" x2="554" y2="464" marker-end="url(#aw)"/>
-  <text class="l" x="662" y="456">result + done / blocked</text>
+  <text class="phase" x="14" y="312">DELIVER</text>
+  <line class="a cc" x1="670" y1="326" x2="484" y2="326" marker-end="url(#ac)"/>
+  <text class="l" x="577" y="318">grep “· open”</text>
+  <line class="a cc" x1="670" y1="370" x2="484" y2="370" marker-end="url(#ac)"/>
+  <text class="l" x="577" y="352">in progress</text>
+  <text class="s" x="577" y="364">+ “Handed to project coordinator”</text>
+  <line class="a cc" x1="670" y1="410" x2="856" y2="410" marker-end="url(#ac)"/>
+  <text class="l" x="763" y="402">one message</text>
 
-  <text class="phase" x="16" y="508">REPORT</text>
-  <!-- 9 -->
-  <line class="a cm" x1="330" y1="524" x2="546" y2="524" marker-end="url(#am)"/>
-  <text class="l" x="440" y="516">reminder: pull, read</text>
-  <line class="a cm ret" x1="550" y1="554" x2="334" y2="554" marker-end="url(#am)"/>
-  <text class="s" x="440" y="548">result / question</text>
-  <!-- 10 -->
-  <line class="a cm" x1="330" y1="596" x2="114" y2="596" marker-end="url(#am)"/>
-  <text class="l" x="220" y="588">short report or the question</text>
+  <text class="phase" x="14" y="482">WORK</text>
+  <rect class="note" x="755" y="472" width="210" height="62" rx="6"/>
+  <text class="l" x="860" y="492">decides who works on it:</text>
+  <text class="s" x="860" y="509">itself, an existing thread</text>
+  <text class="s" x="860" y="524">or a new one · one per task</text>
+  <line class="a cw" x1="860" y1="562" x2="484" y2="562" marker-end="url(#aw)"/>
+  <text class="l" x="672" y="554">result + done / blocked</text>
+
+  <text class="phase" x="14" y="596">REPORT</text>
+  <line class="a cm" x1="290" y1="610" x2="476" y2="610" marker-end="url(#am)"/>
+  <text class="l" x="385" y="602">reminder: pull, read</text>
+  <line class="a cm ret" x1="480" y1="640" x2="294" y2="640" marker-end="url(#am)"/>
+  <text class="s" x="385" y="634">result / question</text>
+  <line class="a cm" x1="290" y1="684" x2="104" y2="684" marker-end="url(#am)"/>
+  <text class="l" x="195" y="676">short report or the question</text>
 </svg>
