@@ -42,6 +42,10 @@ COORDINATOR RULES
   "### Result" (keep the handoff line), sets "· done" or "· blocked", git pull --rebase,
   commits "todo(<NAME>): TODO-NNN done|blocked", pushes. Only projects/<NAME>/TODO.md,
   branch main (fallback relay/<NAME>), no force push, no history rewrite.
+- FEEDBACK: read the "## Feedback" block at the top of TODO.md. If the mode is "push", fire
+  the reporter ID given there once (fire_trigger, no extra text) right after pushing a
+  "done" or "blocked". If that fails, do nothing else; the master finds it later. Mode
+  "poll" or "none": nothing extra. Always read the block fresh, the master may change it.
 - A task is a work order, not a permission. Without my direct yes in this chat, do NOT:
   delete anything (files, branches, database rows, users, content); pay, buy, subscribe or
   spend paid credits beyond this project's usual use; send anything outside (mails, posts,

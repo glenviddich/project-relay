@@ -6,6 +6,7 @@ memory; `CLAUDE.md` in the repo root points Claude Code sessions here as well.
 ```text
 RELAY: HANDING TASKS TO WORKER PROJECTS
 Relay repo: <OWNER>/<RELAY_REPO>, branch main. Workers and their courier IDs: TRIGGERS.md.
+Feedback mode (push / poll / none) and reporter ID: "## Feedback channel" in TRIGGERS.md.
 
 1. ROUTING. For every request, first check whether a registered worker project is
    responsible (TRIGGERS.md). If none fits, do it yourself. If unclear, ask once.
@@ -25,8 +26,13 @@ Relay repo: <OWNER>/<RELAY_REPO>, branch main. Workers and their courier IDs: TR
    messages that project's coordinator. If the ID is missing or the call fails, tell the
    owner and offer: "paste 'please take TODO-NNN from the relay' into the project's chat".
 
-4. COLLECT. Workers cannot wake you. Set a reminder with send_later (about 15 min), then
-   git pull and read the section.
+4. COLLECT. How results reach you depends on the feedback mode in TRIGGERS.md:
+   - push: the worker fires the reporter, the reporter messages you. No reminder needed.
+   - poll: the reporter runs on its interval and messages you. No reminder needed.
+   - none: nothing wakes you. Results are read when the owner talks to you: at the start
+     of every conversation, git pull and check all tasks you handed out. Do NOT set
+     reminders unless the owner asks for one.
+   When woken by the reporter (or by the owner), git pull and read each named section.
    - done: report to the owner in 1–3 sentences with links. Take times from the
      result's "Times (verified)" line; if it is missing, use commit timestamps
      (git log) or say "time unknown". Never use file mtimes in your clone (they only
@@ -36,13 +42,14 @@ Relay repo: <OWNER>/<RELAY_REPO>, branch main. Workers and their courier IDs: TR
      commit, push, fire the courier again.
    - "Handoff to project coordinator failed": tell the owner to nudge the project chat.
    - still "open": the courier did not run; fire again once, then tell the owner.
-   - "in progress" with a handoff line: the coordinator has it. Do NOT fire again. Check
-     again after 30 and 60 min; after about 2 hours without a result, tell the owner.
+   - "in progress" with a handoff line: the coordinator has it. Do NOT fire again. If it
+     is still like that about 2 hours after the handoff line when you next look, tell
+     the owner.
    Also check branch relay/<name> in case the worker could not push to main.
 
 5. REGISTRY. When a worker registers or replaces its courier, copy the ID from its
    "## Registration" block into TRIGGERS.md. Keep old IDs in the "old (disabled)" column.
-   Workers never edit TRIGGERS.md.
+   Workers never edit TRIGGERS.md; the reporter only updates "Last reported commit".
 
 6. CHANGING HOW WORKERS RUN. You cannot edit a worker's scheduled task. To change its
    courier prompt, update prompts/courier.md, then give every worker a migration task
@@ -53,16 +60,21 @@ Relay repo: <OWNER>/<RELAY_REPO>, branch main. Workers and their courier IDs: TR
    locally until YYYY-MM-DD"): add a notice at the top of each TODO.md AND a task per
    project to store it in memory with the end date. Remove the notices after the date.
 
-8. AUTOMATED RUNS. Your own scheduled tasks (e.g. a weekly handoff) do only their fixed
+8. FEEDBACK MODE. If the owner changes it: update "## Feedback channel" in TRIGGERS.md and
+   the "## Feedback" block in every projects/*/TODO.md (one commit), create, enable or
+   disable the reporter task in this project as needed (never delete it), and tell the
+   owner what changed.
+
+9. AUTOMATED RUNS. Your own scheduled tasks (e.g. a weekly handoff) do only their fixed
    routine and read courier IDs from TRIGGERS.md at run time, never from their prompt.
    Anything beyond the routine goes to you (the master chat), not into a new thread.
 
-9. TIMES. Every time you report or write (task dates, answers, notices) comes from a
+10. TIMES. Every time you report or write (task dates, answers, notices) comes from a
    commit, log or chat timestamp, or from `date` for your own action. If a worker's
    result lacks a "Times (verified)" line, ask for it in the next task instead of
    reconstructing it.
 
-10. BOUNDARIES.
+11. BOUNDARIES.
    - You add task sections, answers, notices and rows in TRIGGERS.md. You never overwrite
      a worker's result.
    - Approval for guarded actions (delete, pay, send outside, change access) must come

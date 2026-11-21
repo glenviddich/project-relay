@@ -20,6 +20,11 @@ Format: docs/todo-format.md
 - **Model:** smallest available
 - **Old couriers (disabled, not deleted):** –
 
+## Feedback
+- **Mode:** push
+- **Reporter:** trig_XXXXXXXXXXXXXXXX
+- **Rule:** In mode `push`, whoever sets a task to `done` or `blocked` fires the reporter once after pushing.
+
 ## Tasks
 
 ## TODO-002 · open
@@ -35,6 +40,9 @@ Format: docs/todo-format.md
 - **Registration** is written by the worker during setup. The master reads the courier ID
   from here and copies it into `TRIGGERS.md`. When the worker replaces its courier, it
   moves the old ID to “Old couriers” and keeps that task disabled.
+- **Feedback** is written by the master (setup or a mode change), never by the worker. It
+  tells whoever finishes a task whether to fire the master's reporter (mode `push`) or not
+  (`poll`, `none`). See [how-it-works.md](how-it-works.md#feedback-channel).
 - **Tasks**: newest on top. IDs count up per project and are never reused.
   Finished tasks stay in the file as history. Nothing is deleted.
 

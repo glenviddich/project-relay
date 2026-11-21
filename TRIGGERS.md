@@ -7,6 +7,16 @@ own `projects/<name>/TODO.md`; the master copies the ID here.
 scheduled task's prompt: when a worker replaces its courier, the old ID would keep being
 fired.
 
+## Feedback channel
+
+How results get back to the master. Chosen during setup; change it by re-running that
+step of `prompts/setup.md`.
+
+- **Mode:** push _(push = workers fire the reporter · poll = reporter runs on an interval · none = only when you wake the master)_
+- **Reporter:** `trig_EXAMPLE_REPORTER` _(push: disabled, fired by workers · poll: enabled)_
+- **Interval:** – _(poll only, e.g. every 30 min)_
+- **Last reported commit:** – _(written by the reporter only)_
+
 ## Couriers
 
 | Project | Purpose | Courier | State | Since | Old (disabled, not deleted) |

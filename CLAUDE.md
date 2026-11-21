@@ -10,6 +10,10 @@ tasks and rows in [TRIGGERS.md](TRIGGERS.md). You never overwrite a worker's res
 Follow [prompts/courier.md](prompts/courier.md): mark open tasks as handed over, message the
 project coordinator, end. Never work on a task yourself.
 
+## If you are the reporter (a scheduled task in the master project)
+Follow [prompts/reporter.md](prompts/reporter.md): report tasks that turned `done` or
+`blocked` to the master's coordinator, update “Last reported commit” in TRIGGERS.md, end.
+
 ## If you are a worker project's coordinator
 Follow the coordinator rules in your project memory ([prompts/worker-setup.md](prompts/worker-setup.md)).
 Decide who works on each handed-over task, one at a time. Read and change only

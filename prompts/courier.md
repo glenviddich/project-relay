@@ -55,7 +55,8 @@ STEPS
    c. If that fails too: replace the handoff line with
       "- **Handoff to project coordinator failed:** <time>, <reason>. Please start it in the project chat."
       set the heading to "· blocked", commit "todo(<NAME>): TODO-NNN blocked", push, and
-      post one line for the owner in this run's thread. Even then: NEVER do the work yourself.
+      post one line for the owner in this run's thread. If the "## Feedback" block of the
+      file says mode "push", fire the reporter ID given there once (no extra text). Even then: NEVER do the work yourself.
 5. End silently. Reporting to the owner is the coordinator's job.
 
 A task that went from "blocked" back to "open" with an "Answer" line is handed over the same way.
@@ -70,7 +71,8 @@ You decide who works on it (you, a fitting existing thread, or a new one) and ma
 only one is on each task. When done: add the result under "### Result" (keep the handoff
 line), set the heading to "· done" or "· blocked", git pull --rebase, commit
 "todo(<NAME>): TODO-NNN done|blocked", push. Only this file, branch main
-(fallback relay/<NAME>), no force push.
+(fallback relay/<NAME>), no force push. If the "## Feedback" block of the file says mode
+"push", fire the reporter ID given there once after the push (no extra text).
 Times: only from commit, log or chat timestamps, or `date -u` for your own action; never
 from file mtimes in a clone, never estimated, else "time unknown". End every result with
 "- **Times (verified):** <step> <time> (<source>); …".

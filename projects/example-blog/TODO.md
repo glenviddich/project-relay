@@ -17,6 +17,11 @@ Open tasks: `grep -E '^## TODO-[0-9]+ · open' projects/example-blog/TODO.md`
 - **Model:** smallest available
 - **Old couriers (disabled, not deleted):** trig_EXAMPLE_COURIER_1 (worked on tasks itself, replaced by TODO-005)
 
+## Feedback
+- **Mode:** push
+- **Reporter:** trig_EXAMPLE_REPORTER
+- **Rule:** In mode `push`, whoever sets a task to `done` or `blocked` fires the reporter once (fire_trigger, no extra text) after pushing. In `poll` and `none`, do nothing extra.
+
 ## Tasks
 
 ## TODO-007 · open
