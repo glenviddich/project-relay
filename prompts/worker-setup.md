@@ -4,7 +4,10 @@ Paste this once into the chat of every worker project. Replace `<NAME>` with the
 name under `projects/` and `<OWNER>/<RELAY_REPO>` with your private relay repo. The
 master's setup prints a filled-in copy for each project.
 
-Before pasting: add the relay repo to this project (project settings → repositories).
+You do not need to add the relay repo by hand first: step 0 of the text asks the project
+coordinator to add it. A coordinator may only add a repo when you ask for it explicitly
+in the chat, which pasting this text does. If it cannot (tool missing, access refused), add
+it yourself under **Project settings → Repositories** and paste the text again.
 
 Why the project does this itself: a scheduled task that starts a new thread per run can
 only be created (and later replaced) **inside its own project**. The master cannot edit
@@ -16,7 +19,10 @@ through the GitHub repo <OWNER>/<RELAY_REPO>. You are this project's coordinator
 Save the COORDINATOR RULES below in this project's memory (replace older relay entries,
 do not duplicate them).
 
-SETUP (once, now; I approve creating and firing the scheduled task)
+SETUP (once, now; I approve adding the relay repo and creating and firing the scheduled task)
+0. Add the GitHub repo <OWNER>/<RELAY_REPO> to this project's repositories (project
+   settings), with push access. I ask for this explicitly. If you cannot, stop and tell me
+   to add it by hand under Project settings → Repositories; I will paste this text again.
 1. Read prompts/courier.md in <OWNER>/<RELAY_REPO>. Take the prompt from its code block,
    fill in <NAME>, <OWNER>/<RELAY_REPO> and <FALLBACK> (a second way to reach you, or "none").
 2. Create a scheduled task in THIS project: name "relay courier <NAME>", one new thread per

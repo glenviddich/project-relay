@@ -51,7 +51,7 @@ Claude projects:
 | Scheduled tasks (one new thread per run), created inside each worker project | the courier |
 | In the master: `fire_trigger`, `send_later` | fire couriers, remind itself to collect |
 | In the courier run: a tool to message the project coordinator | the handoff |
-| A **private** GitHub repo created from this template, added to every participating project | the shared mailbox |
+| A **private** GitHub repo created from this template, added to every participating project (the setup texts ask each project to add it; by hand as fallback) | the shared mailbox |
 | Push access to that repo from every project | status and results |
 
 Tool names and behaviour are as observed in late 2026. Anthropic can change them; if a
@@ -64,19 +64,23 @@ the work, and you can nudge the project chat by hand.
 ## Quick start
 
 1. **Create your relay repo**: *Use this template* → name it e.g. `my-relay` → **Private**.
-2. **Add it to every Claude project** that should take part (project settings →
-   repositories), including the master.
-3. **Master setup**: paste [`prompts/setup.md`](prompts/setup.md) into the master project.
-   It asks which projects take part, creates `projects/<name>/TODO.md` for each and prints
+2. **Master setup**: paste [`prompts/setup.md`](prompts/setup.md) into the master project.
+   It first adds the relay repo to the master's own project, then asks which projects
+   take part, creates `projects/<name>/TODO.md` for each and prints
    a ready-to-paste worker setup per project.
-4. **Worker setup**: paste the printed text (based on
+3. **Worker setup**: paste the printed text (based on
    [`prompts/worker-setup.md`](prompts/worker-setup.md)) into each worker project's chat.
-   The project creates its own disabled courier task with
+   The project adds the relay repo to itself (step 0), creates its own disabled courier task with
    [`prompts/courier.md`](prompts/courier.md), stores the coordinator rules, registers the
    courier ID in its `TODO.md` and fires it once as a test.
-5. **Collect**: tell the master “collect couriers”. It copies the IDs into
+
+   > **Adding the repo:** a project's coordinator may add a repo to its project only when
+   > you ask for it in the chat. The setup texts do exactly that. If it does not work in
+   > your account (tool missing, access refused), add the relay repo by hand under
+   > **Project settings → Repositories** and paste the text again.
+4. **Collect**: tell the master “collect couriers”. It copies the IDs into
    [`TRIGGERS.md`](TRIGGERS.md) and sends `TODO-001` round once.
-6. **Use it**: *“blog: check all links on the start page”*. The master writes the TODO,
+5. **Use it**: *“blog: check all links on the start page”*. The master writes the TODO,
    fires the courier, and reports back.
 
 ## Repo layout

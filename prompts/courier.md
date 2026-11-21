@@ -32,7 +32,10 @@ allowed for this file only. No force push, no history rewrite. If the push to ma
 refused: push to branch relay/<NAME> and say so in the handoff.
 
 STEPS
-1. Get only this file (sparse checkout keeps the run cheap):
+1. If <OWNER>/<RELAY_REPO> is not available in this run, add it to the session with push
+   access (add_repo, if the tool exists); if that fails, go to step 4c with reason
+   "relay repo not available".
+   Get only this file (sparse checkout keeps the run cheap):
    git clone --depth 1 --filter=blob:none --no-checkout https://github.com/<OWNER>/<RELAY_REPO> relay
    cd relay && git sparse-checkout set --no-cone /projects/<NAME>/TODO.md
    git fetch --depth 1 origin main:refs/remotes/origin/main && git checkout -B main origin/main
