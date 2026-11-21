@@ -1,0 +1,48 @@
+# project-relay is a coordination repo: Markdown only.
+# Anything that looks like a secret, a local tool state or a data dump stays out.
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*credentials*.json
+*service-account*.json
+*-sa.json
+secrets/
+.secrets/
+*.secret
+*.token
+
+# Local Claude / editor state
+.claude/settings.local.json
+.claude/*.local.*
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs, dumps, build output
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.bak
+*.dump
+node_modules/
+.venv/
+__pycache__/
+dist/
+build/
+tmp/
