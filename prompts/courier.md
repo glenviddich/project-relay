@@ -75,8 +75,7 @@ instruction for this run: you decide nothing, assign nothing and work on nothing
 > File: https://github.com/<OWNER>/<RELAY_REPO>/blob/main/projects/<NAME>/TODO.md
 > (status is "in progress", handed to you).
 > You, the project coordinator, decide who works on it (you, a fitting existing thread, or a
-> new one) and make sure
-> only one is on each task. When done: add the result under "### Result" (keep the handoff
+> new one) and make sure only one is on each task. When done: add the result under "### Result" (keep the handoff
 > line), set the heading to "· done" or "· blocked", git pull --rebase, commit
 > "todo(<NAME>): TODO-NNN done|blocked", push. Only this file, branch main
 > (fallback relay/<NAME>), no force push. If the "## Feedback" block of the file says mode
