@@ -14,7 +14,9 @@ flowchart LR
     courier -- "4 · hand over" --> coord["Project coordinator<br/>(blog's chat)"]
     coord -- "5 · assign" --> work["itself / a thread<br/>one per task"]
     work -- "6 · result, done or blocked" --> repo
-    repo -- "7 · read result" --> master
+    work -. "7 · push: fire reporter" .-> reporter["Reporter<br/>(master project)"]
+    reporter -. "8 · new results" .-> master
+    repo -- "9 · read result" --> master
     master -- "report or question" --> you
 ```
 
@@ -49,7 +51,8 @@ Claude projects:
 |---|---|
 | Claude projects with a coordinator chat and threads | master and workers live there |
 | Scheduled tasks (one new thread per run), created inside each worker project | the courier |
-| In the master: `fire_trigger`, `send_later` | fire couriers, remind itself to collect |
+| In the master: `fire_trigger` | fire couriers |
+| In finishing threads (feedback mode `push`): `fire_trigger` | fire the master's reporter |
 | In the courier run: a tool to message the project coordinator | the handoff |
 | A **private** GitHub repo created from this template, added to every participating project (the setup texts ask each project to add it; by hand as fallback) | the shared mailbox |
 | Push access to that repo from every project | status and results |
@@ -66,7 +69,7 @@ the work, and you can nudge the project chat by hand.
 1. **Create your relay repo**: *Use this template* → name it e.g. `my-relay` → **Private**.
 2. **Master setup**: paste [`prompts/setup.md`](prompts/setup.md) into the master project.
    It first adds the relay repo to the master's own project, then asks which projects
-   take part, creates `projects/<name>/TODO.md` for each and prints
+   take part and **how results should come back** (push, poll or none, see below), creates `projects/<name>/TODO.md` for each and prints
    a ready-to-paste worker setup per project.
 3. **Worker setup**: paste the printed text (based on
    [`prompts/worker-setup.md`](prompts/worker-setup.md)) into each worker project's chat.
@@ -83,6 +86,21 @@ the work, and you can nudge the project chat by hand.
 5. **Use it**: *“blog: check all links on the start page”*. The master writes the TODO,
    fires the courier, and reports back.
 
+## Feedback: push, poll or none
+
+Workers cannot message the master. Setup lets you choose the return channel:
+
+- **push** (recommended): the thread that finishes a task fires a small **reporter** task in
+  the master project; the reporter tells the master what changed. Results arrive within
+  about a minute, one cheap run per result.
+- **poll**: the reporter runs on an interval you pick and reports what changed since its
+  last run. Simple, but it runs even when nothing happened.
+- **none**: no reporter. Results wait until you talk to the master again, which then
+  checks the relay first.
+
+Details: [docs/how-it-works.md](docs/how-it-works.md#feedback-channel). Prompt:
+[`prompts/reporter.md`](prompts/reporter.md).
+
 ## Repo layout
 
 ```
@@ -95,6 +113,7 @@ prompts/
   master.md               standing rules for the master
   worker-setup.md         pasted once into each worker project's chat
   courier.md              prompt of each worker's scheduled task
+  reporter.md             prompt of the master's reporter task (push / poll)
 docs/
   todo-format.md          TODO format: status, handoff line, notices, answers
   how-it-works.md         roles, one handoff step by step, failure cases
@@ -154,15 +173,16 @@ Collected in [`docs/patterns.md`](docs/patterns.md):
 
 ## Cost
 
-Nothing polls. Couriers stay **disabled** and are fired only when there is a TODO. A
+Nothing polls unless you choose feedback mode `poll`. Couriers stay **disabled** and are
+fired only when there is a TODO; in mode `push` the reporter is fired once per result. A
 courier run is a sparse checkout of one file, one `grep`, one commit and one message, so
 the smallest model is enough. The real work happens wherever the coordinator puts it.
 
 ## Limitations
 
 - Platform-bound (see requirements). No local runner, no GitHub Actions variant (yet).
-- Workers cannot wake the master. The master sets itself a reminder (`send_later`) after
-  firing a courier and collects results then.
+- Workers cannot message the master directly; results come back through the reporter
+  (push / poll) or when you next talk to the master (none).
 - Changing every worker's courier needs one nudge per project chat (migration task).
 - Two workers never write the same file, so merge conflicts are rare; a worker that
   cannot push to `main` falls back to branch `relay/<name>`.

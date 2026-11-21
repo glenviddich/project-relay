@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 720" width="980" height="720" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 800" width="980" height="800" role="img" aria-labelledby="t d">
   <title id="t">project-relay: one handoff</title>
-  <desc id="d">Sequence of one task: you ask the master, the master writes a TODO and fires the courier, the courier hands the task to the project coordinator and ends, the coordinator has it worked on and writes the result, the master reports back.</desc>
+  <desc id="d">Sequence of one task: you ask the master, the master writes a TODO and fires the courier, the courier hands the task to the project coordinator and ends, the coordinator has it worked on and writes the result, the result comes back by push, poll or when you wake the master, and the master reports back.</desc>
   <style>
     :root { --bg:#ffffff; --fg:#1f2328; --mute:#59636e; --line:#d1d9e0; --box:#f6f8fa;
             --m:#0969da; --w:#1a7f37; --r:#8250df; --o:#bc4c00; --c:#9a6700; }
@@ -29,14 +29,14 @@
     <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fo"/></marker>
     <marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fc"/></marker>
   </defs>
-  <rect class="bg" width="980" height="720" rx="12"/>
+  <rect class="bg" width="980" height="800" rx="12"/>
 
   <!-- lifelines -->
-  <line class="life" x1="100" y1="88" x2="100" y2="700"/>
-  <line class="life" x1="290" y1="88" x2="290" y2="700"/>
-  <line class="life" x1="480" y1="88" x2="480" y2="700"/>
+  <line class="life" x1="100" y1="88" x2="100" y2="780"/>
+  <line class="life" x1="290" y1="88" x2="290" y2="780"/>
+  <line class="life" x1="480" y1="88" x2="480" y2="780"/>
   <line class="life" x1="670" y1="88" x2="670" y2="424"/>
-  <line class="life" x1="860" y1="88" x2="860" y2="700"/>
+  <line class="life" x1="860" y1="88" x2="860" y2="780"/>
   <!-- courier ends -->
   <line class="end" x1="661" y1="424" x2="679" y2="442"/><line class="end" x1="679" y1="424" x2="661" y2="442"/>
   <text class="s" x="670" y="460">run ends</text>
@@ -60,8 +60,6 @@
   <text class="l" x="385" y="178">TODO-006 · open, push</text>
   <line class="a cm" x1="290" y1="232" x2="666" y2="232" marker-end="url(#am)"/>
   <text class="l" x="575" y="224">fire_trigger(ID from TRIGGERS.md)</text>
-  <rect class="note" x="222" y="250" width="136" height="30" rx="6"/>
-  <text class="l" x="290" y="270">send_later 15 min</text>
 
   <text class="phase" x="14" y="312">DELIVER</text>
   <line class="a cc" x1="670" y1="326" x2="484" y2="326" marker-end="url(#ac)"/>
@@ -80,11 +78,15 @@
   <line class="a cw" x1="860" y1="562" x2="484" y2="562" marker-end="url(#aw)"/>
   <text class="l" x="672" y="554">result + done / blocked</text>
 
-  <text class="phase" x="14" y="596">REPORT</text>
-  <line class="a cm" x1="290" y1="610" x2="476" y2="610" marker-end="url(#am)"/>
-  <text class="l" x="385" y="602">reminder: pull, read</text>
-  <line class="a cm ret" x1="480" y1="640" x2="294" y2="640" marker-end="url(#am)"/>
-  <text class="s" x="385" y="634">result / question</text>
-  <line class="a cm" x1="290" y1="684" x2="104" y2="684" marker-end="url(#am)"/>
-  <text class="l" x="195" y="676">short report or the question</text>
+  <line class="a cw ret" x1="860" y1="606" x2="294" y2="606" marker-end="url(#aw)"/>
+  <text class="l" x="577" y="598">push: fire reporter → it messages the master</text>
+  <text class="s" x="577" y="624">poll: reporter on a timer · none: you wake the master</text>
+
+  <text class="phase" x="14" y="664">REPORT</text>
+  <line class="a cm" x1="290" y1="682" x2="476" y2="682" marker-end="url(#am)"/>
+  <text class="l" x="385" y="674">pull, read</text>
+  <line class="a cm ret" x1="480" y1="712" x2="294" y2="712" marker-end="url(#am)"/>
+  <text class="s" x="385" y="706">result / question</text>
+  <line class="a cm" x1="290" y1="756" x2="104" y2="756" marker-end="url(#am)"/>
+  <text class="l" x="195" y="748">short report or the question</text>
 </svg>
