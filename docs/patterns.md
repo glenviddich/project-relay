@@ -103,6 +103,22 @@ its fixed routine. If it finds something beyond that, it hands it to a coordinat
 (the project's, or the master's) instead of acting or opening a new thread. People can talk
 to coordinators; nobody watches a timer run.
 
+## Verified times
+
+**Problem:** A report says “dropped at 03:21”, but the time came from a file's modification
+time in a fresh clone, i.e. the moment of the last `git pull`. Or it was simply estimated.
+Both look exactly like a real time.
+
+**Pattern:** times only from sources that cannot drift: commit timestamps, log lines, chat
+or PR timestamps, `date -u` for your own action. Everything else is `time unknown`. Every
+result ends with one line the master can copy as is:
+
+```markdown
+- **Times (verified):** dropped 03:21:31 (commit abc1234); picked up 03:24 (chat message); done 03:40:02 (commit def5678). All UTC.
+```
+
+Spec: [todo-format.md](todo-format.md#times).
+
 ## Only one per task
 
 The project coordinator is the only one who assigns work. Before starting a thread on a

@@ -53,6 +53,7 @@ _(courier adds the handoff line, then the coordinator adds the result)_
 - Test fire: TODO-004 handed over, message reached the coordinator.
 - Memory: old “run it yourself” rule replaced by the coordinator rules.
 - Old courier `trig_EXAMPLE_COURIER_1` stays disabled, nothing deleted.
+- **Times (verified):** courier created 10:01 (task list in the project); registered 10:02:40 (commit 3c4d5e6); test fired 10:03:58 (`date -u`); handoff arrived 10:04:12 (chat message). All UTC.
 
 ## TODO-004 · done
 - **Date:** 2026-01-19
@@ -64,6 +65,7 @@ _(courier adds the handoff line, then the coordinator adds the result)_
 ### Result
 - **Handed to project coordinator:** 2026-01-20 10:04 (UTC), courier run. The coordinator decides who works on it.
 **2026-01-20 10:06 (UTC):** done by the coordinator. Rule stored with end date 2026-01-31. No workflow touched.
+- **Times (verified):** handed over 10:04:30 (commit 7e8f9a0); stored in memory 10:06 (`date -u`). All UTC.
 
 ## TODO-003 · blocked
 - **Date:** 2026-01-14
@@ -76,6 +78,7 @@ _(courier adds the handoff line, then the coordinator adds the result)_
 - **Handed to project coordinator:** 2026-01-14 09:58 (UTC), courier run. The coordinator decides who works on it.
 **2026-01-14 10:05 (UTC):** blocked, no read access from a cloud session.
 - The only source is the server's access log; cloud sessions cannot reach the server.
+- **Times (verified):** handed over 09:58:20 (commit b1c2d3e); blocked 10:05:02 (commit f4a5b6c). Last log rotation: time unknown (no access). All UTC.
 
 **Question for the owner: Which source should I read?**
 1. A small collector on the server writes daily numbers into `reports/visitors/` (read only, no key leaves the server). Recommended, see docs/patterns.md.
@@ -101,3 +104,4 @@ _(courier adds the handoff line, then the coordinator adds the result)_
 
 ### Result
 **2026-01-10 09:14 (UTC):** done. Courier registered and disabled, push to `main` works.
+- **Times (verified):** registered 09:12:47 (commit 0a1b2c3); result 09:14 (`date -u`). All UTC.

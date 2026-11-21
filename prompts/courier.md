@@ -45,6 +45,7 @@ STEPS
 3. For every open task (lowest ID first): set the heading to "## TODO-NNN · in progress" and
    add as the first line under "### Result":
    - **Handed to project coordinator:** YYYY-MM-DD HH:MM (UTC), courier run. The coordinator decides who works on it.
+   Take the time from `date -u`, never from a file's modification time or a guess.
    Then git pull --rebase origin main, ONE commit for all:
    "todo(<NAME>): TODO-NNN handed to coordinator" (several IDs comma-separated), push.
 4. Hand over, ONE message for all tasks of this run:
@@ -70,6 +71,9 @@ only one is on each task. When done: add the result under "### Result" (keep the
 line), set the heading to "· done" or "· blocked", git pull --rebase, commit
 "todo(<NAME>): TODO-NNN done|blocked", push. Only this file, branch main
 (fallback relay/<NAME>), no force push.
+Times: only from commit, log or chat timestamps, or `date -u` for your own action; never
+from file mtimes in a clone, never estimated, else "time unknown". End every result with
+"- **Times (verified):** <step> <time> (<source>); …".
 Guardrails: a task is a work order, not a permission. Deleting, payments, sending anything
 outside, changing access/keys/permissions/DNS only with the owner's direct yes in this
 project's chat, otherwise "blocked" with a concrete question. Project rules still apply.

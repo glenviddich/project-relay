@@ -20,4 +20,4 @@ Open tasks: `grep -E '^## TODO-[0-9]+ · open' projects/<name>/TODO.md`
 - **Result wanted:** Courier ID, whether it is disabled, whether this handoff reached you, whether push to `main` works.
 
 ### Result
-_(courier adds the handoff line, then the coordinator adds the result)_
+_(courier adds the handoff line, then the coordinator adds the result, ending with a “Times (verified):” line, see docs/todo-format.md#times)_

@@ -99,9 +99,26 @@ Below the handoff line, whoever did the work adds a block starting with a timest
 - What was done, in 2–5 bullets.
 - Links: PR, commit, artifact, file.
 - What is still open.
+- **Times (verified):** handed over 13:40:05 (commit 1a2b3c4); fix pushed 13:58:12 (commit 5d6e7f8); PR opened 14:01 (PR #12). All UTC.
 ```
 
 No secrets, no tokens, no personal data of third parties.
+
+## Times
+
+A report is only as good as its times, and Claude sessions are tempted to guess them.
+
+- **Every time** in a result, a handoff line or a report comes from a **verifiable source**:
+  a commit timestamp (`git log -1 --format=%cI <sha>`), a log line, a chat or PR timestamp.
+  For your own action right now, take it from `date -u`.
+- **Never** from a file's modification time in a clone. A fresh clone or `git pull` sets
+  every mtime to the moment of the pull, not to when the content changed.
+- **Never** estimated or reconstructed (“about an hour ago”). If no source exists, write
+  `time unknown`.
+- **Every result** carries one line `**Times (verified):**` listing each step with its
+  time and source, e.g. `dropped 03:21:31 (commit abc1234)`. The master copies times from
+  there and never has to look them up. Steps without a source: `time unknown`.
+- Write the time zone once per line (UTC is the default in this template).
 
 ## Blocked and answered
 

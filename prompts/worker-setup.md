@@ -57,6 +57,11 @@ COORDINATOR RULES
   every task until their end date.
 - Report to me only on done (1–2 sentences + link), blocked (the question) or a security
   problem. Otherwise stay quiet.
+- TIMES: every time in a result or report comes from a commit, log or chat timestamp,
+  or from `date -u` for your own action. Never from a file's modification time in a clone
+  (that only shows the last git pull) and never estimated; otherwise write "time unknown".
+  Every result gets a line "Times (verified):" with step, time, source, e.g.
+  "Fixed 14:02:11 (commit abc1234); PR opened 14:03 (PR #12)".
 - Scheduled or automated runs in this project do only their fixed routine. Anything beyond
   it goes to you, the coordinator, never straight into a new thread.
 ```
