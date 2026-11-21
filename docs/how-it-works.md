@@ -2,58 +2,69 @@
 
 ## Roles
 
-| Role | Where it lives | Writes |
-|---|---|---|
-| **Owner** | you | answers, approvals in the worker's chat |
-| **Master** | one Claude project you talk to | new task sections, answers, `TRIGGERS.md` |
-| **Worker** | every other participating Claude project | only its own `projects/<name>/TODO.md` |
-| **Relay repo** | private GitHub repo from this template | – (shared mailbox) |
+| Role | Where it lives | Does | Writes |
+|---|---|---|---|
+| **Owner** | you | asks, answers, approves | answers, approvals in the project chat |
+| **Master** | one Claude project you talk to | routes requests, fires couriers, collects results | new tasks, answers, notices, `TRIGGERS.md` |
+| **Courier run** | a disabled scheduled task inside each worker project | delivers open tasks to the project coordinator, nothing else | status → `in progress` + handoff line |
+| **Project coordinator** | the Claude in each worker project's chat | decides who works on a task (itself, an existing thread, a new thread), one per task | result, `done` / `blocked` |
+| **Relay repo** | private GitHub repo from this template | shared mailbox and history | – |
 
 ## One handoff, step by step
 
 ![Handoff sequence](relay-flow.svg)
 
 1. You tell the master: *“blog: add an RSS feed.”*
-2. Master: `git pull`, writes `TODO-004 · open` into `projects/blog/TODO.md`, pushes.
-3. Master: `fire_trigger(<blog trigger ID>)`, then `send_later(~15 min)`.
-4. Worker run starts (cheap model): `git pull`, `grep` for `· open`. Found one.
-5. Worker: status → `in progress`, push. Subagent (stronger model) does the work in the
-   worker's own project, e.g. opens a PR there.
-6. Worker: writes the result, status → `done` (or `blocked` + question), push.
-7. Master wakes up, `git pull`, reads the section, reports to you.
+2. Master: `git pull`, writes `TODO-006 · open` into `projects/blog/TODO.md`, pushes.
+3. Master: `fire_trigger(<courier ID from TRIGGERS.md>)`, then `send_later(~15 min)`.
+4. Courier run (smallest model, sparse checkout of one file): `grep` for `· open`.
+5. Courier: status → `in progress`, adds *“Handed to project coordinator”*, pushes, sends one
+   message to the project coordinator, ends. It never does the work.
+6. Project coordinator: picks who works on it (itself, a fitting thread, a new thread).
+7. Whoever works on it: writes the result, status → `done` or `blocked`, pushes.
+8. Master wakes up, `git pull`, reads the section, reports to you.
 
 ## Design decisions
 
-**Status in the heading.** One `grep` finds open work without parsing Markdown. A cheap
-model can do the check reliably.
+**Courier, not worker.** Scheduled runs and threads cannot talk to each other. When every
+run starts working on its own, two runs (or a run and a thread you opened) end up on the
+same task. The project's coordinator is the one place that knows what is already running,
+so it assigns the work.
+
+**Status in the heading.** One `grep` finds open work without parsing Markdown. The
+smallest model can do the courier's job reliably.
 
 **One file per worker.** Workers never write the same file, so concurrent pushes do not
 conflict. `git pull --rebase` resolves the rest.
 
-**Triggers disabled, fired on demand.** No idle runs, no cost when nothing happens. The
-registration lives in the worker's own file, so a worker never needs write access to a
-shared file; the master copies IDs into `TRIGGERS.md`.
+**Couriers disabled, fired on demand.** No idle runs, no cost when nothing happens.
+
+**Each project owns its courier.** A scheduled task that opens a new thread per run can
+only be created inside its own project. That is why the worker registers its own ID and
+why changes go out as migration tasks ([patterns.md](patterns.md#migration-task)).
 
 **Approval stays in the chat.** A file can be edited by anyone with repo access, a
-prompt-injected agent included. So guarded actions (delete, pay, send outside, change
+prompt-injected agent included. Guarded actions (delete, pay, send outside, change
 access) need the owner's direct yes in the worker's own chat, never a line in a file.
 
-**Results stay in the file.** The worker chat only gets a message on done, blocked or a
+**Results stay in the file.** Project chats only get a message on done, blocked or a
 security problem. The repo history is the log.
 
 ## Failure cases
 
-| Situation | What happens |
-|---|---|
-| Worker has no trigger ID yet | master tells you and offers a manual run |
-| `fire_trigger` fails | master tells you; you can paste “run the relay check” into the worker chat |
-| Worker cannot push to `main` | worker pushes to `relay/<name>`, master reads that branch |
-| Task stays `in progress` | master checks again after 30 and 60 min, then tells you it is stuck |
-| Worker needs a secret | task is `blocked` with a proposal where to put it (environment secret), never in the repo |
-| Task asks to break the rules | worker refuses, `blocked`, tells you |
+| Situation | What the file shows | What the master does |
+|---|---|---|
+| Courier not registered | – | tells you, offers a manual nudge in the project chat |
+| Courier did not run | still `open` | fires once more, then tells you |
+| Coordinator unreachable | `blocked`, “Handoff to project coordinator failed” | asks you to nudge the project chat |
+| Work takes long | `in progress` + handoff line | does **not** fire again; after ~2 h tells you |
+| Worker cannot push to `main` | result on branch `relay/<name>` | reads that branch |
+| Task needs a secret | `blocked` + proposal | suggests an environment secret or a collector ([patterns.md](patterns.md#collector-on-your-own-machine)) |
+| Task tries to break the rules | `blocked` | tells you |
 
 ## Recurring tasks
 
-For something weekly, give the master its own scheduled task: “every Monday 09:00 add a
-TODO for `<name>` like TODO-00X and fire the trigger.” Record it under *Recurring
-handoffs* in `TRIGGERS.md`.
+Give the master its own scheduled task: “every Monday 09:00 add a TODO for `<name>` like
+TODO-00X and fire its courier, courier IDs only from TRIGGERS.md”. Record it under
+*Recurring handoffs* in `TRIGGERS.md`. If the data sits behind a secret, put a collector
+in front ([patterns.md](patterns.md#collector-on-your-own-machine)).

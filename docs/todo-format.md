@@ -11,11 +11,14 @@ everywhere (commits, branches, trigger table). Use lowercase letters, digits and
 Only the worker "<name>" writes this file (plus the master when adding a TODO).
 Format: docs/todo-format.md
 
+> ⚠️ **Notice (valid until 2026-01-31):** CI quota used up. Run tests locally, do not
+> wait for CI checks. Normal procedure again from 2026-02-01.
+
 ## Registration
-- **Trigger:** trig_XXXXXXXXXXXXXXXX
+- **Courier:** trig_XXXXXXXXXXXXXXXX
 - **Registered:** 2026-01-10 09:12 (UTC)
-- **Model:** small model for the check, stronger subagent for work
-- **Notes:** –
+- **Model:** smallest available
+- **Old couriers (disabled, not deleted):** –
 
 ## Tasks
 
@@ -26,9 +29,12 @@ Format: docs/todo-format.md
 ...
 ```
 
-- **Registration** is written by the worker during setup. The master reads the trigger ID
-  from here and copies it into `TRIGGERS.md`. If the worker recreates its scheduled task,
-  it updates this block.
+- **Notices** (optional) sit right under the title. They hold temporary rules that apply
+  to every task until their end date. Only the master adds and removes them. See
+  [patterns.md](patterns.md#temporary-rules-with-an-end-date).
+- **Registration** is written by the worker during setup. The master reads the courier ID
+  from here and copies it into `TRIGGERS.md`. When the worker replaces its courier, it
+  moves the old ID to “Old couriers” and keeps that task disabled.
 - **Tasks**: newest on top. IDs count up per project and are never reused.
   Finished tasks stay in the file as history. Nothing is deleted.
 
@@ -56,10 +62,10 @@ Exactly one of:
 
 | Status | Meaning | Set by |
 |---|---|---|
-| `open` | new or answered, waits for the next run | master / owner |
-| `in progress` | a run has picked it up | worker |
-| `done` | finished, result written | worker |
-| `blocked` | worker needs an answer, the question is in the result | worker |
+| `open` | new or answered, waits for the courier | master / owner |
+| `in progress` | courier handed it to the project coordinator; someone works on it | courier |
+| `done` | finished, result written | whoever the coordinator picked |
+| `blocked` | needs an answer (question in the result), or the handoff failed | worker / courier |
 
 Find open tasks:
 
@@ -67,9 +73,26 @@ Find open tasks:
 grep -E '^## TODO-[0-9]+ · open' projects/<name>/TODO.md
 ```
 
+## The handoff line
+
+The courier writes one line as the first entry under `### Result`, and sets the status to
+`in progress`:
+
+```markdown
+- **Handed to project coordinator:** 2026-01-15 13:40 (UTC), courier run. The coordinator decides who works on it.
+```
+
+It stays there when the result is added. For the master it means: the task has arrived,
+do not fire the courier again. If the coordinator could not be reached, the courier
+writes instead, and sets `blocked`:
+
+```markdown
+- **Handoff to project coordinator failed:** 2026-01-15 13:40 (UTC), tool not available. Please start it in the project chat.
+```
+
 ## Writing a result
 
-Under `### Result`, the worker adds a block starting with a timestamp:
+Below the handoff line, whoever did the work adds a block starting with a timestamp:
 
 ```markdown
 **2026-01-15 14:03 (UTC):** done.
@@ -107,6 +130,7 @@ direct “yes” in the worker's own chat.
 | Event | Message |
 |---|---|
 | master adds a task | `todo(<name>): add TODO-NNN` |
-| worker picks it up | `todo(<name>): TODO-NNN in progress` |
-| worker finishes | `todo(<name>): TODO-NNN done` / `… blocked` |
-| worker registers | `todo(<name>): register trigger` |
+| courier hands over | `todo(<name>): TODO-NNN handed to coordinator` (several IDs comma-separated) |
+| work finished | `todo(<name>): TODO-NNN done` / `… blocked` |
+| worker registers its courier | `todo(<name>): register courier` |
+| master adds or removes a notice | `todo(<name>): notice …` |

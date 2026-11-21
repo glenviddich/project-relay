@@ -5,19 +5,19 @@ Format: [docs/todo-format.md](../../docs/todo-format.md)
 Open tasks: `grep -E '^## TODO-[0-9]+ · open' projects/<name>/TODO.md`
 
 ## Registration
-- **Trigger:** _(not registered yet)_
+- **Courier:** _(not registered yet)_
 - **Registered:** –
 - **Model:** –
-- **Notes:** –
+- **Old couriers (disabled, not deleted):** –
 
 ## Tasks
 
 ## TODO-001 · open
 - **Date:** <YYYY-MM-DD>
 - **From:** master (setup)
-- **Task:** Confirm the relay setup: read this file, check that you can push to `main`, and register your trigger above if you have not yet.
+- **Task:** Confirm the relay setup: the courier handed this task to you (the project coordinator), you can push to `main`, and the Registration block above is filled in.
 - **Limits:** Only change this file.
-- **Result wanted:** Trigger ID, model of the scheduled task, whether push to `main` works.
+- **Result wanted:** Courier ID, whether it is disabled, whether this handoff reached you, whether push to `main` works.
 
 ### Result
-_(filled in by the worker)_
+_(courier adds the handoff line, then the coordinator adds the result)_

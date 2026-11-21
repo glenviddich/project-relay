@@ -4,38 +4,68 @@ Only the worker "example-blog" writes this file (plus the master when adding a T
 Format: [docs/todo-format.md](../../docs/todo-format.md)
 Open tasks: `grep -E '^## TODO-[0-9]+ · open' projects/example-blog/TODO.md`
 
-> This is a made-up example showing all four states. Delete the folder once your own
+> This is a made-up example showing every state. Delete the folder once your own
 > projects are set up.
 
+> ⚠️ **Notice (valid until 2026-01-31):** CI quota used up. Run tests, lint and builds
+> locally and name the result; do not trigger or wait for CI runs, do not disable
+> workflows. Normal procedure again from 2026-02-01.
+
 ## Registration
-- **Trigger:** trig_EXAMPLE0000000000
-- **Registered:** 2026-01-10 09:12 (UTC)
-- **Model:** small model for the check, stronger subagent for the work
-- **Notes:** push to main works
+- **Courier:** trig_EXAMPLE_COURIER_2
+- **Registered:** 2026-01-20 10:02 (UTC)
+- **Model:** smallest available
+- **Old couriers (disabled, not deleted):** trig_EXAMPLE_COURIER_1 (worked on tasks itself, replaced by TODO-005)
 
 ## Tasks
 
-## TODO-004 · open
-- **Date:** 2026-01-16
+## TODO-007 · open
+- **Date:** 2026-01-22
+- **From:** master (weekly link check, report `reports/links/example-blog-2026-01-22.md`)
+- **Task:** Fix the broken links listed in the report.
+- **Limits:** Only links, no text changes. No deploy.
+- **Result wanted:** PR link, links that could not be fixed and why.
+
+### Result
+_(courier adds the handoff line, then the coordinator adds the result)_
+
+## TODO-006 · in progress
+- **Date:** 2026-01-21
 - **From:** master (on behalf of the owner)
 - **Task:** Add an RSS feed for the blog posts at `/feed.xml`.
 - **Limits:** No new dependency if the site generator can do it natively. No deploy.
 - **Result wanted:** PR link, feed URL on the preview build.
 
 ### Result
-_(filled in by the worker)_
+- **Handed to project coordinator:** 2026-01-21 15:10 (UTC), courier run. The coordinator decides who works on it.
 
-## TODO-003 · in progress
-- **Date:** 2026-01-15
-- **From:** master (on behalf of the owner)
-- **Task:** Shorten all page titles longer than 60 characters, keep the meaning.
-- **Limits:** Only titles, no body text. No deploy.
-- **Result wanted:** Table old → new title, PR link.
+## TODO-005 · done
+- **Date:** 2026-01-20
+- **From:** master (migration, see docs/patterns.md)
+- **Note:** Only work on this when the owner asks in the project chat. A courier run sets it to “blocked” with “waiting for the owner's nudge in the project chat”.
+- **Task:** Switch to the courier model: create a new scheduled task in this project with the prompt from `prompts/courier.md`, disable it, keep the old task disabled (do not delete), update memory with the coordinator rules, fire the new task once as a test.
+- **Limits:** Only this file in the relay repo. No other scheduled task changed or deleted.
+- **Result wanted:** New courier ID, whether the test handoff reached the coordinator, whether memory is updated.
 
 ### Result
-_(filled in by the worker)_
+**2026-01-20 10:05 (UTC):** done, in the project chat on the owner's nudge.
+- New courier `trig_EXAMPLE_COURIER_2`, one thread per run, disabled. Registration updated.
+- Test fire: TODO-004 handed over, message reached the coordinator.
+- Memory: old “run it yourself” rule replaced by the coordinator rules.
+- Old courier `trig_EXAMPLE_COURIER_1` stays disabled, nothing deleted.
 
-## TODO-002 · blocked
+## TODO-004 · done
+- **Date:** 2026-01-19
+- **From:** master (temporary rule for all projects)
+- **Task:** Store in memory until 2026-01-31: CI quota is used up; run tests locally, do not trigger or wait for CI. Note the end date; the rule ends on 2026-02-01.
+- **Limits:** Do not disable, delete or change workflows.
+- **Result wanted:** Confirmation that the rule is stored with its end date.
+
+### Result
+- **Handed to project coordinator:** 2026-01-20 10:04 (UTC), courier run. The coordinator decides who works on it.
+**2026-01-20 10:06 (UTC):** done by the coordinator. Rule stored with end date 2026-01-31. No workflow touched.
+
+## TODO-003 · blocked
 - **Date:** 2026-01-14
 - **From:** master (on behalf of the owner)
 - **Task:** Collect visitor numbers for the last 30 days.
@@ -43,24 +73,31 @@ _(filled in by the worker)_
 - **Result wanted:** Table date | visitors | page views, sums for 7/30 days, source.
 
 ### Result
-**2026-01-14 10:05 (UTC):** blocked, no read access from this session.
-- The only source is the server's access log; this session has no access to the server.
-- No tracking script in the site, so no analytics export either.
+- **Handed to project coordinator:** 2026-01-14 09:58 (UTC), courier run. The coordinator decides who works on it.
+**2026-01-14 10:05 (UTC):** blocked, no read access from a cloud session.
+- The only source is the server's access log; cloud sessions cannot reach the server.
 
 **Question for the owner: Which source should I read?**
-1. Run this task on your own machine via remote session, read the log only. Recommended.
+1. A small collector on the server writes daily numbers into `reports/visitors/` (read only, no key leaves the server). Recommended, see docs/patterns.md.
 2. Give a read-only analytics token as an environment secret of this project
    (access change, needs your explicit yes in this chat).
+
+## TODO-002 · blocked
+- **Date:** 2026-01-12
+- **From:** master (on behalf of the owner)
+- **Task:** Shorten all page titles longer than 60 characters.
+- **Limits:** Only titles. No deploy.
+- **Result wanted:** Table old → new title, PR link.
+
+### Result
+- **Handoff to project coordinator failed:** 2026-01-12 16:20 (UTC), message tool not available in the courier run. Please start it in the project chat.
 
 ## TODO-001 · done
 - **Date:** 2026-01-10
 - **From:** master (setup)
-- **Task:** Confirm the relay setup: read this file, check that you can push to `main`, and register your trigger above if you have not yet.
+- **Task:** Confirm the relay setup.
 - **Limits:** Only change this file.
-- **Result wanted:** Trigger ID, model of the scheduled task, whether push to `main` works.
+- **Result wanted:** Courier ID, disabled, handoff reached you, push to `main`.
 
 ### Result
-**2026-01-10 09:14 (UTC):** done.
-- Scheduled task "relay-check example-blog" created and disabled, ID in Registration.
-- Model: small model as requested.
-- Push to `main` works.
+**2026-01-10 09:14 (UTC):** done. Courier registered and disabled, push to `main` works.
