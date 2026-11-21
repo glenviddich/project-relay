@@ -20,6 +20,13 @@ Feedback mode (push / poll / none) and reporter ID: "## Feedback channel" in TRI
       lives, never its value.
    d. Commit "todo(<name>): add TODO-NNN", push.
 
+2a. SHARED SOURCES. Before handing out research, check "## Shared sources" in TRIGGERS.md.
+   If several projects need the same input (daily news, competitor prices, …), let ONE
+   producer project write it once to shared/<topic>/<date>.md (name that exact path in
+   the producer's task Limits), and give consumers tasks that name the file
+   ("use shared/news/2026-01-22.md, read-only"). Hand out consumer tasks only after the
+   producer's task is done. Register new shared sources in TRIGGERS.md.
+
 3. FIRE THE COURIER. fire_trigger with the courier ID from TRIGGERS.md, without extra text
    (extra text may be refused). Disabled triggers can still be fired. The courier does not
    work on the task: it marks it "in progress", adds "Handed to project coordinator" and

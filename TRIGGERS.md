@@ -23,6 +23,15 @@ step of `prompts/setup.md`.
 |---|---|---|---|---|---|
 | example-blog | Example only: a static blog | `trig_EXAMPLE_COURIER_2` | disabled, fired on demand, hands over to coordinator | 2026-01-20 | `trig_EXAMPLE_COURIER_1` |
 
+## Shared sources
+
+Research done once and read by several projects (docs/patterns.md, “Shared sources”).
+Check here before asking a project to research something.
+
+| Folder | Producer | Rhythm | Consumers | Format |
+|---|---|---|---|---|
+| `shared/news/` | news-desk (example) | daily 07:00 UTC, one file per day | example-blog | items with source URL, retrieval time, 2-line summary |
+
 ## Recurring handoffs
 
 Jobs of the master's own (a scheduled task in the master project) that create tasks on a

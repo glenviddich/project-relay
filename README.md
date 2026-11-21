@@ -32,6 +32,31 @@ the master writes the task into the worker's `TODO.md`, starts delivery, and lat
 you what came back. Every handoff, answer and follow-up question is a Git commit, so you
 get a full audit trail for free.
 
+## Research once, use everywhere
+
+The relay is not only a way to hand out tasks. Because all projects share one repo, one
+project can **do a job once and the others reuse the result**. Say a blog, a shop and a
+newsletter all need today's news: instead of three projects running the same searches,
+one producer writes `shared/news/2026-01-22.md` (every item with source and retrieval
+time) and the other three get tasks that point at that file.
+
+```mermaid
+flowchart LR
+    master[Master] -- "1 · daily TODO" --> desk["news-desk<br/>(producer)"]
+    desk -- "2 · writes once" --> shared[("shared/news/<br/>2026-01-22.md")]
+    master -- "3 · TODOs that name the file" --> blog[blog]
+    master -- "3" --> shop[shop]
+    master -- "3" --> letter[newsletter]
+    shared -. "4 · read only" .-> blog
+    shared -. "4 · read only" .-> shop
+    shared -. "4 · read only" .-> letter
+```
+
+One research run instead of N, the same facts in every channel, one place to correct a
+mistake, and a dated archive. Works for anything several projects need: news, competitor
+prices, release notes, event dates. How to set it up:
+[docs/patterns.md](docs/patterns.md#shared-sources-research-once-use-everywhere).
+
 ## Why a courier and not a worker run
 
 The first version let each project's scheduled run do the work itself. In practice that
@@ -123,6 +148,8 @@ templates/
   TODO.md                 empty TODO.md for a new project
 projects/
   example-blog/TODO.md    a worked example with every state
+shared/
+  news/2026-01-22.md      example of a shared source (research once, read by many)
 ```
 
 ## The TODO format in 20 seconds
@@ -163,6 +190,7 @@ master the task has arrived and must not be fired again. Full spec:
 
 Collected in [`docs/patterns.md`](docs/patterns.md):
 
+- **Shared sources**: one producer researches, all others read the file (see above).
 - **Migration task**: the master cannot edit a worker's scheduled task, so changes go out
   as a TODO that the owner nudges once in each project chat.
 - **Temporary rules with an end date**: a notice at the top of every `TODO.md` plus a task

@@ -24,6 +24,16 @@ Open tasks: `grep -E '^## TODO-[0-9]+ · open' projects/example-blog/TODO.md`
 
 ## Tasks
 
+## TODO-008 · open
+- **Date:** 2026-01-22
+- **From:** master (daily news, shared source)
+- **Task:** Write a short “News of the day” post from `shared/news/2026-01-22.md`. Pick the 2–3 items that fit our readers, link each to its source.
+- **Limits:** Read the shared file read-only; no new research. If the file is missing: blocked. No deploy.
+- **Result wanted:** PR link, which items were used.
+
+### Result
+_(courier adds the handoff line, then the coordinator adds the result)_
+
 ## TODO-007 · open
 - **Date:** 2026-01-22
 - **From:** master (weekly link check, report `reports/links/example-blog-2026-01-22.md`)

@@ -17,7 +17,8 @@ Follow [prompts/reporter.md](prompts/reporter.md): report tasks that turned `don
 ## If you are a worker project's coordinator
 Follow the coordinator rules in your project memory ([prompts/worker-setup.md](prompts/worker-setup.md)).
 Decide who works on each handed-over task, one at a time. Read and change only
-`projects/<your-name>/TODO.md`. Nothing else in this repo is for you.
+`projects/<your-name>/TODO.md`. Exception: files under `shared/` that a task names, read-only,
+or written at the exact path a producer task's Limits name. Nothing else in this repo is for you.
 
 ## For everyone
 - Format: [docs/todo-format.md](docs/todo-format.md). Status in the heading:

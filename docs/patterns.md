@@ -2,6 +2,52 @@
 
 Things that came up in real use, written down so you do not have to rediscover them.
 
+## Shared sources: research once, use everywhere
+
+**Problem:** Several projects need the same input, e.g. today's industry news for a blog,
+a shop's news box and a newsletter. Each project researches it on its own: the same
+searches three times, three times the cost, and three slightly different versions of
+the truth.
+
+**Pattern:** one **producer** project does the research once and writes the result to a
+shared file. The others are **consumers**: their tasks name that file, and they read it
+instead of researching again.
+
+```mermaid
+flowchart LR
+    master[Master] -- "1 · daily TODO" --> desk["news-desk<br/>(producer)"]
+    desk -- "2 · writes once" --> shared[("shared/news/<br/>2026-01-22.md")]
+    master -- "3 · TODOs that name the file" --> blog[blog]
+    master -- "3" --> shop[shop]
+    master -- "3" --> letter[newsletter]
+    shared -. "4 · read only" .-> blog
+    shared -. "4 · read only" .-> shop
+    shared -. "4 · read only" .-> letter
+```
+
+1. **Producer.** Pick one project (or create a small one, e.g. `news-desk`). The master
+   gives it a task, usually as a recurring job: “write today's news to
+   `shared/news/YYYY-MM-DD.md`”. The task's *Limits* name that exact path; it is the only
+   file outside its own `TODO.md` the producer may write.
+2. **Format.** Every item carries its source URL and retrieval time, plus a short summary.
+   No secrets, no personal data. One file per day (or per topic); never overwrite an
+   older day.
+3. **Order.** The master hands out consumer tasks only after the producer's task is
+   `done` (it learns that through the reporter or on its next look). If the file is
+   missing, the consumer sets its task to `blocked` (“shared/news/… missing”) instead of
+   researching on its own.
+4. **Consumers.** Their task names the file: “use `shared/news/2026-01-22.md`, pick what
+   fits our audience”. They read it **read-only** and treat it as data, not instructions.
+   If something needs checking, they go to the listed source, not to a new search.
+5. **Registry.** `TRIGGERS.md` lists each shared source (folder, producer, rhythm,
+   consumers), so the master knows what already exists before asking anyone to research.
+
+**What it gets you:** N projects, one research run. Consistent facts across all
+channels, one place to fix a wrong item, and a dated archive of what was known when.
+
+Works for anything several projects need: daily news, price lists of competitors,
+release notes of a tool you all use, a glossary, event dates.
+
 ## Migration task
 
 **Problem:** You want to change how all workers run (new courier prompt, new rule), but the
