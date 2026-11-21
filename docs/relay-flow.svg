@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 640" width="880" height="640" role="img" aria-labelledby="t d">
+  <title id="t">project-relay: one handoff</title>
+  <desc id="d">Sequence of one task handoff between owner, master project, relay repo and worker project.</desc>
+  <style>
+    :root { --bg:#ffffff; --fg:#1f2328; --mute:#59636e; --line:#d1d9e0; --box:#f6f8fa;
+            --m:#0969da; --w:#1a7f37; --r:#8250df; --o:#bc4c00; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0d1117; --fg:#e6edf3; --mute:#9198a1; --line:#3d444d; --box:#151b23;
+              --m:#4493f8; --w:#3fb950; --r:#ab7df8; --o:#f0883e; }
+    }
+    .bg { fill: var(--bg); }
+    text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fg); }
+    .h { font-size: 15px; font-weight: 600; text-anchor: middle; }
+    .s { font-size: 11.5px; fill: var(--mute); text-anchor: middle; }
+    .l { font-size: 13px; text-anchor: middle; }
+    .n { font-size: 12px; font-weight: 700; fill: var(--bg); text-anchor: middle; }
+    .life { stroke: var(--line); stroke-width: 2; stroke-dasharray: 4 5; }
+    .hdr { fill: var(--box); stroke-width: 2; }
+    .note { fill: var(--box); stroke: var(--line); stroke-width: 1.5; }
+    .a { stroke-width: 2; fill: none; }
+    .ret { stroke-dasharray: 6 4; }
+    .cm { stroke: var(--m); } .cw { stroke: var(--w); } .co { stroke: var(--o); } .cr { stroke: var(--r); }
+    .fm { fill: var(--m); } .fw { fill: var(--w); } .fo { fill: var(--o); } .fr { fill: var(--r); }
+    .phase { font-size: 11px; font-weight: 600; fill: var(--mute); letter-spacing: .06em; }
+  </style>
+  <defs>
+    <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fm"/></marker>
+    <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fw"/></marker>
+    <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="fo"/></marker>
+  </defs>
+  <rect class="bg" width="880" height="640" rx="12"/>
+
+  <!-- lifelines -->
+  <line class="life" x1="110" y1="88" x2="110" y2="620"/>
+  <line class="life" x1="330" y1="88" x2="330" y2="620"/>
+  <line class="life" x1="550" y1="88" x2="550" y2="620"/>
+  <line class="life" x1="770" y1="88" x2="770" y2="620"/>
+
+  <!-- headers -->
+  <rect class="hdr co" x="40"  y="24" width="140" height="62" rx="10"/>
+  <text class="h" x="110" y="50">You</text><text class="s" x="110" y="70">owner</text>
+  <rect class="hdr cm" x="250" y="24" width="160" height="62" rx="10"/>
+  <text class="h" x="330" y="50">Master project</text><text class="s" x="330" y="70">the one you talk to</text>
+  <rect class="hdr cr" x="470" y="24" width="160" height="62" rx="10"/>
+  <text class="h" x="550" y="50">Relay repo</text><text class="s" x="550" y="70">projects/blog/TODO.md</text>
+  <rect class="hdr cw" x="690" y="24" width="160" height="62" rx="10"/>
+  <text class="h" x="770" y="50">Worker project</text><text class="s" x="770" y="70">“blog”, trigger disabled</text>
+
+  <text class="phase" x="16" y="116">HAND OFF</text>
+  <!-- 1 -->
+  <line class="a co" x1="110" y1="132" x2="326" y2="132" marker-end="url(#ao)"/>
+  <text class="l" x="220" y="124">“blog: add an RSS feed”</text>
+  <!-- 2 -->
+  <line class="a cm" x1="330" y1="180" x2="546" y2="180" marker-end="url(#am)"/>
+  <text class="l" x="440" y="172">TODO-004 · open, push</text>
+  <!-- 3 -->
+  <line class="a cm" x1="330" y1="228" x2="766" y2="228" marker-end="url(#am)"/>
+  <text class="l" x="660" y="220">fire_trigger(id)</text>
+  <!-- 4 -->
+  <rect class="note" x="262" y="246" width="136" height="30" rx="6"/>
+  <text class="l" x="330" y="266">send_later 15 min</text>
+
+  <text class="phase" x="16" y="312">WORK</text>
+  <!-- 5 -->
+  <line class="a cw" x1="770" y1="326" x2="554" y2="326" marker-end="url(#aw)"/>
+  <text class="l" x="662" y="318">pull, grep “· open”</text>
+  <!-- 6 -->
+  <line class="a cw" x1="770" y1="372" x2="554" y2="372" marker-end="url(#aw)"/>
+  <text class="l" x="662" y="364">status → in progress</text>
+  <!-- 7 -->
+  <rect class="note" x="660" y="390" width="210" height="46" rx="6"/>
+  <text class="l" x="765" y="409">subagent does the work</text>
+  <text class="s" x="765" y="426">e.g. PR in the blog’s own repo</text>
+  <!-- 8 -->
+  <line class="a cw" x1="770" y1="464" x2="554" y2="464" marker-end="url(#aw)"/>
+  <text class="l" x="662" y="456">result + done / blocked</text>
+
+  <text class="phase" x="16" y="508">REPORT</text>
+  <!-- 9 -->
+  <line class="a cm" x1="330" y1="524" x2="546" y2="524" marker-end="url(#am)"/>
+  <text class="l" x="440" y="516">reminder: pull, read</text>
+  <line class="a cm ret" x1="550" y1="554" x2="334" y2="554" marker-end="url(#am)"/>
+  <text class="s" x="440" y="548">result / question</text>
+  <!-- 10 -->
+  <line class="a cm" x1="330" y1="596" x2="114" y2="596" marker-end="url(#am)"/>
+  <text class="l" x="220" y="588">short report or the question</text>
+</svg>
